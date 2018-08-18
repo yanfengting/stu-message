@@ -22,7 +22,7 @@ app.use(session({
   secret: 'stu-manage',
   resave: false,
   saveUninitialized: true,
-  cookie: {  maxAge: 1000 * 60 *60 *3}
+  cookie: {  maxAge: 1000 * 60 *60 *3 }
 
 }));
 app.use(express.static(path.join(__dirname, 'public')));

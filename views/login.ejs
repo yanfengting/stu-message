@@ -30,13 +30,13 @@
             <div class="panel-body">
                 <form class="form-horizontal">
                     <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-4 control-label" id="loginName">账号：</label>
+                        <label for="inputEmail3" class="col-sm-4 control-label" >账号：</label>
                         <div class="col-sm-8">
                             <input type="email" class="form-control" id="loginName" placeholder="请输入账号">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="inputPassword3" class="col-sm-4 control-label" id="password">密码：</label>
+                        <label for="inputPassword3" class="col-sm-4 control-label" >密码：</label>
                         <div class="col-sm-8">
                             <input type="password" class="form-control" id="password" placeholder="请输入密码">
                         </div>
@@ -108,7 +108,8 @@
                 ev.preventDefault();
                 var loginName = $.trim($('#loginName').val());
                 var password = $.trim($('#password').val());
-                console.log(loginName);
+                // console.log(loginName);
+                // console.log(password);
                 if (!loginName || !password) {
                     // 插件modal框
                     $('#myModal .modal-body').text('账号或密码不能为空!');

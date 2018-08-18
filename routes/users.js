@@ -15,6 +15,10 @@ router.post('/login', function(req, res, next) {
   var password = req.body.password;
   var type = req.body.type;
   var remember = req.body.remember;
+  
+  // console.log(loginName);
+  // console.log(password);
+
   if(!loginName || !password) {
     res.json({
       code:201,
@@ -55,9 +59,11 @@ pool.query("SELECT * FROM `users` where loginName=? AND password=? AND type=?",[
   req.session.save();
 
   console.log(req.session.user);
+// 输出RowDataPacket { id: 1, loginName: 'yft', type: 0, status: 0 }
+  
   // 服务器端
   res.cookie('user',user)
-
+  
   res.json({code:200,message:"成功！"});
 })
 
