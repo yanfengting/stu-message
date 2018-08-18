@@ -42,6 +42,22 @@ pool.query("SELECT * FROM `users` where loginName=? AND password=? AND type=?",[
     res.json({code:205,message:"你的账号被禁用或删除！"})
     return;
   }
+  delete user.password;
+  req.session.user = user;
+  // user 自己起的
+  // req.session.user =  {
+  //   id : user.id,
+  //   loginName : user.loginName,
+  //   type:user.type,
+  //   status:user.status
+  // }
+  // 请求是客户端
+  req.session.save();
+
+  console.log(req.session.user);
+  // 服务器端
+  res.cookie('user',user)
+
   res.json({code:200,message:"成功！"});
 })
 

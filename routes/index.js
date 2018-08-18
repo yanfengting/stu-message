@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
-
+var checkLogin = require('../modules/checkLogin.js');
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+router.get('/', checkLogin,function(req, res, next) {
+  res.render('index', { title: '学生管理系统' });
 });
 
 module.exports = router;
