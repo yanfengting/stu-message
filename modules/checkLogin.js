@@ -6,6 +6,7 @@ function checkLogin(req,res,next){
         })
         return;
     }
+    next();
 }
 
 module.exports = checkLogin;
