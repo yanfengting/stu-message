@@ -1,125 +1,26 @@
-<!DOCTYPE html>
-<html>
+<!-- layout()方法把总模板layout.ejs中共用的视图，脚本样式“继承” -->
+<% layout('layout') -%>
 
-<head>
-  <title>
-    <%= title %>
-  </title>
-
-  <link rel='stylesheet' href='/stylesheets/style.css' />
-  <!-- Bootstrap -->
-  <link href="/javascripts/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
-  <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
-  <!--[if lt IE 9]>
-      <script src="/javascripts/html5shiv.min.js"></script>
-      <script src="/javascripts/respond.min.js"></script>
-    <![endif]-->
-</head>
-
-<body>
-  <h1>
-    <%= title %>
-  </h1>
-  <p>Welcome to
-    <%= title %>
-  </p>
   <!-- <form action="/logout" method="POST">
       <button id='btnLogout' type="submit">注销</button>
     </form> -->
   <!-- 类型等于button 或者submit区别 （后者自动调用提交）-->
-  <button id='btnLogout' type="submit">注销</button>
+  <!-- <button id='btnLogout' type="submit">注销</button> -->
 
-  <!-- Modal -->
-  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            <button>
-              <h4 class="modal-title" id="myModalLabel">提示</h4>
-            </button>
-          </button>
-        </div>
-        <div class="modal-body">
+  <!-- <%  block('footer').append('<script src="/javascripts/index.js"></script>') %> -->
 
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-dismiss="modal">确定 </button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- script文件放在了 /javascripts/index.js-->
 
-  <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
-  <script src="/javascripts/jquery.js"></script>
-  <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
-  <script src="/javascripts/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
-  <script>
-    // 表示当前文档结构准备好了
-    $(function () {
 
-      /* $('#btnLogout').click(function(){
-        $.post('/logout',function(data){
-            console.log(data);
-        })
-      }) */
-      $('#btnLogout').on('click', function () {
-        // $.ajax方法是jquary脚本库进行ajax请求底部的一个方法，像get（），post（），getJSON(),getScript()等方法都是在此方法上做了进一步的封装，让用户在使用这些封装方法更加方便，更简单，编写代码更少
-        // $.ajax()又是对原生js对象XmlHttpRequest()对象的进一步封装
 
-        // 请求方法常用的四种：get(),post(),put(),delete()符号四种风格称为‘RESTful’
-        // jQuary脚本库并没有封装put(),delete(),所以要发起两种请求时必须使用$.ajax().
-        $.ajax({
-          method: 'POST',
-          url:'/logout',
-          data:{},
-          success:function(data){
-            if(data.code != 200){
-              $('#myModal .modal-body').text('注销出现异常!');
-              $('#myModal').modal();
-              return;
-            }
-            // href默认get请求，url地址也是
-            location.href= '/login';
-          },
-          error:function(err){
-            $('#myModal .modal-body').text(err.message);
-              $('#myModal').modal();
-          }
-        })
-        })
-        /* // 方式1：使用$.fn.extend()进行扩展
-        // extend扩展,特别注意，自行扩展的属性和方法，不能和jQuary库中已存在的属性和方法重名.为了防止覆盖jQuary脚本库中的属性和方法，一般建议你命名加项目或公司名称作为前缀
-        $.fn.extend({
-          abcdef : "abcdef",
-          abc :function(){
-          console.log('abc');
-        },
-        def:function(){
-          console.log('def');
-        }
-      })
-      // 此种扩展的方法必须先选择一个元素，再调用方法，我们肯定想直接使用$.abc()
-      $(document).abc();
-      $(document).def();
-      console.log($(document).abcdef);
 
-      // 方式2：$.abc()
-      $.extend({
-          abcdef : "abcdef",
-          abc :function(){
-          console.log('abc');
-        },
-        def:function(){
-          console.log('def');
-        }
-      })
-      $.abc();  */
-    })
-  </script>
-</body>
 
-</html>
+
+
+
+
+
+
+
+  
+  

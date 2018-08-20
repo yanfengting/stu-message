@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>
+        <%= title %>
+    </title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="/stylesheets/login.css">
+    <link href="/javascripts/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+    <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+    <!--[if lt IE 9]>
+      <script src="/javascripts/html5shiv.min.js"></script>
+      <script src="/javascripts/respond.min.js"></script>
+    <![endif]-->
+    <%- block('head').toString() %>
+</head>
+
+<body>
+    <!-- bs3-nav -->
+    <div class="container-fluid">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">
+                        <%= title %>
+                    </a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="javascript:void(0)" id="logout">注销</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container-fluid">
+            <div class="row" style="margin: 0 -30px;">
+                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="headingOne">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        学生管理
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                <div class="panel-body" style="padding: 0">
+                                    <div class="panel-body" style="padding: 0">
+                                        <ul class="list-group" style="margin-bottom: 0">
+                                            <li class="list-group-item active">
+                                                <a href="/students/add">添加学生</a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <a href="/students/list">学生列表</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="headingTwo">
+                                <h4 class="panel-title">
+                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false"
+                                        aria-controls="collapseTwo">
+                                        教师管理
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                <div class="panel-body" style="padding: 0">
+                                    <ul class="list-group" style="margin-bottom: 0">
+                                        <li class="list-group-item">
+                                            <a href="/teachers/add">添加教师</a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <a href="/teachers/list">教师列表</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <!-- 点位符 -->
+                            <%- body -%>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 简化index.js -->
+        <!-- 占位符 -->
+        <%- body -%>
+
+            <!-- Modal -->
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                <button>
+                                    <h4 class="modal-title" id="myModalLabel">提示</h4>
+                                </button>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">确定 </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    </div>
+    </div>
+    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+    <script src="/javascripts/jquery.js"></script>
+    <script src="/javascripts/jquery.cookie.min.js"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="/javascripts/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <!-- 导入 -->
+    <script src="/javascripts/index.js"></script>
+
+
+    <%- block('footer').toString() %>
+        <!-- <script>
+            // 表示当前文档结构准备好了
+            $(function () {
+          
+              /* $('#btnLogout').click(function(){
+                $.post('/logout',function(data){
+                    console.log(data);
+                })
+              }) */
+              $('#logout').on('click', function () {
+                // $.ajax方法是jquary脚本库进行ajax请求底部的一个方法，像get（），post（），getJSON(),getScript()等方法都是在此方法上做了进一步的封装，让用户在使用这些封装方法更加方便，更简单，编写代码更少
+                // $.ajax()又是对原生js对象XmlHttpRequest()对象的进一步封装
+          
+                // 请求方法常用的四种：get(),post(),put(),delete()符号四种风格称为‘RESTful’
+                // jQuary脚本库并没有封装put(),delete(),所以要发起两种请求时必须使用$.ajax().
+                $.ajax('/logout', function (data) {
+                  if (data.code != 200) {
+                    $('#myModal .modal-body').text('注销出现异常!');
+                    $('#myModal').modal();
+                    return;
+                  }
+                  // href默认get请求，url地址也是
+                  location.href = '/login';
+                }
+          
+                )
+              })
+              /* // 方式1：使用$.fn.extend()进行扩展
+              // extend扩展,特别注意，自行扩展的属性和方法，不能和jQuary库中已存在的属性和方法重名.为了防止覆盖jQuary脚本库中的属性和方法，一般建议你命名加项目或公司名称作为前缀
+              $.fn.extend({
+                abcdef : "abcdef",
+                abc :function(){
+                console.log('abc');
+              },
+              def:function(){
+                console.log('def');
+              }
+            })
+            // 此种扩展的方法必须先选择一个元素，再调用方法，我们肯定想直接使用$.abc()
+            $(document).abc();
+            $(document).def();
+            console.log($(document).abcdef);
+          
+            // 方式2：$.abc()
+            $.extend({
+                abcdef : "abcdef",
+                abc :function(){
+                console.log('abc');
+              },
+              def:function(){
+                console.log('def');
+              }
+            })
+            $.abc();  */
+            })
+            </script> -->
+</body>
+
+</html>
