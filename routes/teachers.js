@@ -1,12 +1,12 @@
 var express = require('express');
 var router = express.Router();
 
-router.get('/add', checkLogin,function(req, res, next) {
-  res.render('index', { title: '添加成功！' });
+router.get('/add',function(req, res, next) {
+  res.render('index', { title: '教师添加！' });
 });
 
-router.get('/list', checkLogin,function(req, res, next) {
-    res.render('index', { title: '查询成功！' });
+router.get('/list', function(req, res, next) {
+    res.render('index', { title: '教师查询！' });
   });
-  
+
 module.exports = router;
