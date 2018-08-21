@@ -5,16 +5,17 @@ var pool = require('../modules/db.js');
 var md5 = require('md5');
 
 /* GET users listing. */
-router.get('/login', function (req, res, next) {
-  res.render('login', {
+router.get('/login', function (req, res, next) { 
+  // console.log(res.cookie('loginName')||'');
+  res.render('login', {   
     title: '登录'
   })
 });
 router.post('/login', function (req, res, next) {
-  var loginName = req.body.loginName;
+  var loginName = req.body.loginName;//body吧发过来的数据传过来
   var password = req.body.password;
   var type = req.body.type;
-  var remember = req.body.remember;
+  var remember = req.body.remember ;
 
   // console.log(loginName);
   // console.log(password);
@@ -36,33 +37,37 @@ router.post('/login', function (req, res, next) {
       res.json({ code: 203, message: "账号或密码或者类型有误！" })
       return;
     }
+    
     if (result.length > 1) {
       res.json({ code: 204, message: "你的账号异常！" })
       return;
     }
-
+    // console.log(result.length); //1
     var user = result[0];
     if (user.status != 0) {
       res.json({ code: 205, message: "你的账号被禁用或删除！" })
       return;
     }
+    // 把查询到的user存到session
     delete user.password;
-    req.session.user = user;
-    // user 自己起的
-    // req.session.user =  {
-    //   id : user.id,
-    //   loginName : user.loginName,
-    //   type:user.type,
-    //   status:user.status
-    // }
-    // 请求是客户端
+    req.session.user = user; //后面的user是查询出来的
     req.session.save();
-
-    console.log(req.session.user);
-    // 输出RowDataPacket { id: 1, loginName: 'yft', type: 0, status: 0 }
-
     // 服务器端
-    res.cookie('user', user)
+    res.cookie('user', user);
+    // user 自己起的
+    // 请求是客户端
+    
+    // console.log(req.session.user);
+    // 输出RowDataPacket { id: 1, loginName: 'admin', type: 0, status: 0 }
+
+    // console.log(typeof remember); //输出string
+    // console.log(typeof false);//boolean
+    //remember不转换，直接比较字符串
+    if(remember === 'true'){
+      res.cookie('loginName', user.loginName);
+    } else{
+      res.clearCookie('loginName');
+    }
 
     res.json({ code: 200, message: "成功！" });
   })

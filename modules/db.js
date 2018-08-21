@@ -4,7 +4,9 @@ var pool = mysql.createPool({
     port: 3306,
     user: 'root',
     password: 'root',
-    database: 'db-student1'
+    database: 'db-student',
+    // 多语句等于true
+    multipleStatements:true
 });
 
 module.exports = pool;
