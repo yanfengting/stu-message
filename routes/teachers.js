@@ -37,14 +37,14 @@ router.post('/add',function(req, res, next){
         return;
     }
     
-    /* pool.query("INSERT INTO users(loginName, password, type, status)VALUE(?,?,?,?)", [name, md5('123456'), 2, 0], function (err, result2) {
+    pool.query("INSERT INTO users(loginName, password, type, status)VALUE(?,?,?,?)", [name, md5('123456'), 2, 0], function (err, result2) {
         if (err) {
             res.json({ code: 201, message: "数据库操作异常！" });
             return;
         }
 
         res.json({ code: 200, message: '保存成功！' })
-    }) */
+    })
 })
    
 });

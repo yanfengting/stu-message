@@ -20,8 +20,15 @@ $(`.list-group a[href='${activeLink}']`).parent().addClass('active');//parent()å
 $('.panel-title a').attr('aria-expanded', false);
 $('.panel-collapse').removeClass('in');
 
-$(`.list-group a[href='${activeLink}']`).closest('.panel-default').find('.panel-title a').attr('aria-expanded', true);
-$(`.list-group a[href='${activeLink}']`).closest('.panel-collapse').addClass('in');
+if($(`.list-group a[href='${activeLink}']`).length == 0){
+  $('.panel-title:first a').attr('aria-expanded',true);
+  $('.panel-collapse:first').addClass('in');
+}else{
+  $(`.list-group a[href='${activeLink}']`).closest('.panel-default').find('.panel-title a').attr('aria-expanded', true);
+  $(`.list-group a[href='${activeLink}']`).closest('.panel-collapse').addClass('in');
+}
+
+
 
 
 /* $('.list-group a').click(function(){

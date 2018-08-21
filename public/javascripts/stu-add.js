@@ -30,7 +30,6 @@ $('#btnSave').click(function (e) {
             $('#myModal').modal();
             return;
         }
-        
-        // location.href = '/student/list';
+        location.href = '/student/list';
     })
 })

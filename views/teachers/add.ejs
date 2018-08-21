@@ -5,8 +5,8 @@
         <div class="row">
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                 <div class="form-group">
-                    <label for="tno">教师编号：</label>
-                    <input type="text" class="form-control" id="tno" placeholder="请输入学号">
+                    <label for="sno">学号：</label>
+                    <input type="text" class="form-control" id="sno" placeholder="请输入学号">
                 </div>
             </div>
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
@@ -43,8 +43,12 @@
                 <div class="form-group">
                     <label for="majorId">所学专业：</label>
                     <select class="form-control" id="majorId">
-                        <option value="男">男</option>
-                        <option value="女">女</option>
+                        <option value="-1" selected>请选择...</option>
+                        <% for(var i=0;i < majors.length;i++){ %>
+                            <option value="<%= majors[i].id %>">
+                                <%= majors[i].name %>
+                            </option>
+                            <% } %>
                     </select>
                 </div>
             </div>
@@ -55,8 +59,12 @@
                 <div class="form-group">
                     <label for="classId">所属班级：</label>
                     <select class="form-control" id="classId">
-                        <option value="男">男</option>
-                        <option value="女">女</option>
+                        <option value="-1" selected>请选择...</option>
+                        <% for(var i=0;i < classes.length;i++){ %>
+                            <option value="<%= classes[i].id %>">
+                                <%= classes[i].name %>
+                            </option>
+                            <% } %>
                     </select>
                 </div>
             </div>
@@ -64,9 +72,11 @@
                 <div class="form-group">
                     <label for="departId">所属院系：</label>
                     <select class="form-control" id="departId">
-                        <option value="男">男</option>
-                        <option value="女">女</option>
-                    </select>
+                            <option value="-1" selected>请选择...</option>
+                            <% for(var i=0;i < departments.length;i++){ %>
+                                <option value="<%= departments[i].id %>"><%= departments[i].name %></option>
+                            <% } %>    
+                        </select>
                 </div>
             </div>
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">

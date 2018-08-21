@@ -5,6 +5,7 @@ var path = require('path');
 var logger = require('morgan');
 // 添加session模块 并使用
 //  npm install --save ejs-mate
+//// 我们在设计每一个页面时，可能会存在共用的视图， 在开发时，为了不重复编写代码，我们想把共用的视图抽离出来，封装到一个公共的模板中（如layout.ejs），让每一个页面都“继承”layout.ejs中公共的视图。而ejs-mate模块就提供此功能，类似的模块还有express-parital等等。如果不想使用模块，还可以使用ejs模块中include
 var engine = require('ejs-mate');
 var session = require('express-session')
 var indexRouter = require('./routes/index');
