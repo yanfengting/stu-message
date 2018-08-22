@@ -78,7 +78,11 @@ router.post('/add', checklogin, function (req, res, next) {
 
 
 router.get('/list', checklogin, function (req, res, next) {
-    var sql = `SELECT s.id,s.sno,s.name,s.sex,s.birthday,s.card,s.majorId,s.classId,s.departId,s.nativePlace,s.address,s.qq,s.phone,s.email,s.status,s.createTime,s.createUserId,s.updateTime,s.updateUserId, 
+    var sql = `
+    SELECT * FROM majors WHERE status = 0;
+    SELECT * FROM classes WHERE status = 0;
+    SELECT * FROM departments WHERE status = 0;
+    SELECT s.id,s.sno,s.name,s.sex,s.birthday,s.card,s.majorId,s.classId,s.departId,s.nativePlace,s.address,s.qq,s.phone,s.email,s.status,s.createTime,s.createUserId,s.updateTime,s.updateUserId, 
     d.name as departName, 
     m.name as majorName, 
     c.name as className, 
@@ -90,13 +94,82 @@ router.get('/list', checklogin, function (req, res, next) {
     LEFT JOIN classes c ON s.classId = c.id
     LEFT JOIN users u1 ON s.createUserId = u1.id
     LEFT JOIN users u2 ON s.updateUserId = u2.id
+    where (1=1)
     `;
+    console.log(req.query.sno);
+
+    //搜索功能
+    var sno = req.query.sno;
+    var name = req.query.name;
+    var sex = req.query.sex;
+    var majorId = req.query.majorId;
+    var classId = req.query.classId;
+    var departId = req.query.departId;
+    var status = req.query.status;
+    var birthdayBegin = req.query.birthdayBegin;
+    var birthdayEnd = req.query.birthdayEnd;
+    var card = req.query.card;
+
+    if(sno){
+        sql += ` AND s.sno like '%${sno}%'`;
+    }
+    if(name){
+        sql += ` AND s.name like '%${name}%'`;
+    }
+    if(sex && sex != -1){
+        sql += ` AND s.sex='${sex}'`;
+    }
+    if(majorId && majorId != -1){
+        sql += ` AND s.majorId='${majorId}'`;
+    }
+    if(classId && classId != -1){
+        sql += ` AND s.classId='${classId}'`;
+    }
+    if(departId && departId != -1){
+        sql += ` AND s.departId='${departId}'`;
+    }
+    if(status && status != -1){
+        sql += ` AND s.status='${status}'`;
+    }
+    /* */
+    if(birthdayBegin && birthdayEnd){
+        try{
+            var begin = new Date(birthdayBegin);
+            var end = new Date(birthdayEnd);
+            console.log(begin-end);
+            if(begin >= end){
+                sql += ` AND s.birthday >='${birthdayEnd}' AND s.birthday <='${birthdayBegin}' `
+            }else{
+                sql += ` AND s.birthday >='${birthdayBegin}' AND s.birthday <='${birthdayEnd}' `
+            }
+        }catch(error){
+            res.json({code:201,message:"日期输入有误！"});
+            return;
+        }    
+    }else{
+        if(birthdayBegin){
+            sql += ` AND s.birthday>='${birthdayBegin}'`;
+        }
+        if(birthdayEnd){
+            sql += ` AND s.birthday<='${birthdayEnd}'`;
+        } 
+    }
+    if(card){
+        sql += ` AND s.card like '%${card}%'`;
+    }
+
     pool.query(sql, function (err, result) {
         if (err) {
             res.json({ code: 201, message: '数据库操作异常！' })
             return;
         }
-        res.render('students/list', { title: '学生列表！', students: result });
+        res.render('students/list', { 
+            title: '学生列表！', 
+            students: result[3],
+            majors:result[0],
+            classes:result[1],
+            departments:result[2]
+        });
     });
 });
 // :id占位符，把客户端传过来的数据放到id变量中
@@ -188,5 +261,20 @@ router.post('/remove',checklogin,function(req, res, next){
         }
         res.json({ code: 200, message: '删除成功！' });
     })
+})
+
+router.post('/multiRomove',checklogin,function(req, res, next){
+    var ids = req.body.ids;
+    if(!ids){
+        res.json({code:201,message:"参数错误！"});
+        return;
+    }
+    pool.query(`update students set status=1 where id in (${ids})`,function(err,result){
+        if(err){
+            res.json({code:201,message:"数据库操作异常！"});
+            return;
+        }
+        res.json({code:200,message:"批量删除成功！"});
+    });
 })
 module.exports = router;
