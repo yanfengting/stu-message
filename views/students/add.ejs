@@ -1,7 +1,7 @@
 <!-- bs3-row-col -->
 <% layout('layout') -%>
 
-    <form>
+    <form style="padding-top: 10px;">
         <div class="row">
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                 <div class="form-group">
@@ -72,11 +72,13 @@
                 <div class="form-group">
                     <label for="departId">所属院系：</label>
                     <select class="form-control" id="departId">
-                            <option value="-1" selected>请选择...</option>
-                            <% for(var i=0;i < departments.length;i++){ %>
-                                <option value="<%= departments[i].id %>"><%= departments[i].name %></option>
-                            <% } %>    
-                        </select>
+                        <option value="-1" selected>请选择...</option>
+                        <% for(var i=0;i < departments.length;i++){ %>
+                            <option value="<%= departments[i].id %>">
+                                <%= departments[i].name %>
+                            </option>
+                            <% } %>
+                    </select>
                 </div>
             </div>
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
@@ -120,7 +122,9 @@
 
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <button type="submit" id="btnSave" class="btn btn-primary">保存</button>
+                <button type="submit" id="btnSave" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>保存
+                </button>
             </div>
         </div>
     </form>

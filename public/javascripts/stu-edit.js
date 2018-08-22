@@ -21,9 +21,12 @@ $('#btnSave').click(function (e) {
     var qq = $.trim($('#qq').val());
     var phone = $.trim($('#phone').val());
     var email = $.trim($('#email').val());
-    var data = {sno,name,sex, birthday,card,majorId,classId,departId,nativePlace ,address, qq,phone, email}
+
+    var id = $("input[type='hidden']").val();
+
+    var data = {id,sno,name,sex, birthday,card,majorId,classId,departId,nativePlace ,address, qq,phone, email}
     // 客户端判断省略
-    $.post('/students/add', data, function (d) {
+    $.post('/students/edit', data, function (d) {
         console.log(d);
         if(d.code != 200){
             $('#myModal .modal-body').text(d.message);

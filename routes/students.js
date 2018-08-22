@@ -77,8 +77,116 @@ router.post('/add', checklogin, function (req, res, next) {
 })
 
 
-router.get('/list', function (req, res, next) {
-    res.render('students/list', { title: '学生列表！' });
+router.get('/list', checklogin, function (req, res, next) {
+    var sql = `SELECT s.id,s.sno,s.name,s.sex,s.birthday,s.card,s.majorId,s.classId,s.departId,s.nativePlace,s.address,s.qq,s.phone,s.email,s.status,s.createTime,s.createUserId,s.updateTime,s.updateUserId, 
+    d.name as departName, 
+    m.name as majorName, 
+    c.name as className, 
+    u1.loginName as createUserName, 
+    u2.loginName as updateUserName 
+    FROM students s
+    LEFT JOIN departments d ON s.departId = d.id
+    LEFT JOIN majors m ON s.majorId = m.id
+    LEFT JOIN classes c ON s.classId = c.id
+    LEFT JOIN users u1 ON s.createUserId = u1.id
+    LEFT JOIN users u2 ON s.updateUserId = u2.id
+    `;
+    pool.query(sql, function (err, result) {
+        if (err) {
+            res.json({ code: 201, message: '数据库操作异常！' })
+            return;
+        }
+        res.render('students/list', { title: '学生列表！', students: result });
+    });
 });
+// :id占位符，把客户端传过来的数据放到id变量中
+router.get('/edit/:id', checklogin, function (req, res, next) {
+    // params=parameter
+    var id = req.params.id;
+    if (!id) {
+        res.json({ code: 201, message: '参数id必填' });
+        return;
+    }
+    // [[],[],[],[]]
+    pool.query(
+    `select * from students where id = ?;
+    SELECT * FROM majors WHERE status = 0;
+    SELECT * FROM classes WHERE status = 0;
+    SELECT * FROM departments WHERE status = 0;
+    `, [id], function (err, result) {
+            if (err) {
+                res.json({ code: 202, message: '数据库操作异常！' });
+                return;
+            }
+            if (result[0].length != 1) {
+                res.json({ code: 203, message: '你编辑的学生不存在！' });
+                return;
+            }
+            // 查找视图 传参数 result[0]是一个数组[0]取它的对象
+            res.render('students/edit', {
+                title: '编辑学生',
+                student: result[0][0],
+                majors: result[1],
+                classes: result[2],
+                departments: result[3]
+            });
+        })
+})
+router.post('/edit', checklogin, function (req, res, next) {
+    var id = req.body.id;
+    var sno = req.body.sno;
+    var name = req.body.name;
+    var sex = req.body.sex;
+    var birthday = req.body.birthday;
+    var card = req.body.card;
+    var majorId = req.body.majorId - 0; //转化数字
+    var classId = req.body.classId - 0;
+    var departId = req.body.departId - 0;
+    var nativePlace = req.body.nativePlace;
+    var address = req.body.address;
+    var qq = req.body.qq;
+    var phone = req.body.phone;
+    var email = req.body.email;
+    // console.log(sno);
+    //1.服务器端判断先省略
+    if (!id || !sno || !name || !sex || !birthday || !card || majorId == -1 || classId == -1 || departId == -1) {
+        res.json({ code: 201, message: '主键，学号，姓名，性别，生日，身份证号,所学专业，所属班级，所属院系不能为空' });
+        return;
+    }
 
+    pool.query(`select * from students where id=?`, [id], function (err, result) {
+        if (err) {
+            res.json({ code: 202, message: '数据库操作异常！' });
+            return;
+        }
+        if (result[0].length > 1 || result[0].length < 1) {
+            res.json({ code: 203, message: '你编辑的学生不存在！' });
+            return;
+        }
+
+        var sql = `UPDATE students set sno=?,name=?,sex=?,birthday=?,card=?,majorId=?,classId=?,departId=?, nativePlace=?, address=?, qq=?, phone=?,updateTime=?,updateUserId=? where id=?`;
+        var date = [sno, name, sex, birthday, card, majorId, classId, departId, nativePlace, address, qq, phone, email, new Date(), req.session.user.id, id];
+        pool.query(sql, date, function (err, result1) {
+            if (err) {
+                res.json({ code: 202, message: '数据库操作异常！' });
+                return;
+            }
+            res.json({ code: 200, message: "编辑成功" });
+        })
+    });
+})
+router.post('/remove',checklogin,function(req, res, next){
+    var id = req.body.id;
+    if(!id){
+        res.json({ code: 201, message: '参数错误！' });
+        return;
+    }
+    pool.query(`update students set status=1 where id=?`,[id],function(err,result){
+        if(err){
+            res.json({ code: 201, message: '数据库操作异常！' });
+            return;
+        }
+        res.json({ code: 200, message: '删除成功！' });
+    })
+})
 module.exports = router;
