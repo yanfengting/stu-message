@@ -4,6 +4,7 @@ var router = express.Router();
 var pool = require('../modules/db.js');
 var md5 = require('md5');
 var checklogin = require('../modules/checkLogin.js');
+var pager = require('../modules/pager.js');
 
 router.get('/add', checklogin, function (req, res, next) {
     var sql = `
@@ -75,13 +76,12 @@ router.post('/add', checklogin, function (req, res, next) {
         })
     });
 })
-
-
 router.get('/list', checklogin, function (req, res, next) {
     var sql = `
     SELECT * FROM majors WHERE status = 0;
     SELECT * FROM classes WHERE status = 0;
     SELECT * FROM departments WHERE status = 0;
+    SELECT COUNT(*) as totalCount FROM students;
     SELECT s.id,s.sno,s.name,s.sex,s.birthday,s.card,s.majorId,s.classId,s.departId,s.nativePlace,s.address,s.qq,s.phone,s.email,s.status,s.createTime,s.createUserId,s.updateTime,s.updateUserId, 
     d.name as departName, 
     m.name as majorName, 
@@ -96,7 +96,7 @@ router.get('/list', checklogin, function (req, res, next) {
     LEFT JOIN users u2 ON s.updateUserId = u2.id
     where (1=1)
     `;
-    console.log(req.query.sno);
+    // console.log(req.query.sno);
 
     //搜索功能
     var sno = req.query.sno;
@@ -132,6 +132,7 @@ router.get('/list', checklogin, function (req, res, next) {
         sql += ` AND s.status='${status}'`;
     }
     /* */
+    
     if(birthdayBegin && birthdayEnd){
         try{
             var begin = new Date(birthdayBegin);
@@ -157,19 +158,53 @@ router.get('/list', checklogin, function (req, res, next) {
     if(card){
         sql += ` AND s.card like '%${card}%'`;
     }
+    var page = req.query.page || 1;
+    page = page - 0;//转换字符串
+    var pageSize = 10;
+    /*(page -1)*pageSize,pageSize
+     0,10
+    10,10
+    20,10 */
+    sql += ` LIMIT ${(page -1) * pageSize},${pageSize}`;
 
     pool.query(sql, function (err, result) {
         if (err) {
             res.json({ code: 201, message: '数据库操作异常！' })
             return;
         }
-        res.render('students/list', { 
+        // 取当前表数据的总记录数
+        var totalCount = result[3][0].totalCount;//1999        
+        var totalPage = Math.ceil(totalCount / pageSize);//1999/10=200
+        var pages = pager(page,totalPage);
+            console.log(page);
+                console.log(pages);
+                console.log(totalPage);//200
+                console.log(totalCount);
+                console.log(pager(1,totalPage));
+                console.log(pager(2,totalPage));
+                console.log(pager(3,totalPage));
+                console.log(pager(4,totalPage));
+                console.log(pager(5,totalPage));
+                console.log(pager(6,totalPage));
+                console.log(pager(7,totalPage));
+                console.log(pager(198,totalPage));
+                console.log(pager(199,totalPage));
+        
+            res.render('students/list', { 
             title: '学生列表！', 
-            students: result[3],
+            students: result[4],
             majors:result[0],
             classes:result[1],
-            departments:result[2]
-        });
+            departments:result[2],
+            // 总页码显示到客户端
+            pageInfo:{
+                page,//当前页
+                pages,//要在视图上显示的页码范围
+                pageSize,//每页显示的个数
+                totalPage,//总页数
+                totalCount//表中数据的总记录数
+            }
+        }); 
     });
 });
 // :id占位符，把客户端传过来的数据放到id变量中

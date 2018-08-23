@@ -15,7 +15,7 @@ router.post('/login', function (req, res, next) {
   var loginName = req.body.loginName;//body吧发过来的数据传过来
   var password = req.body.password;
   var type = req.body.type;
-  var remember = req.body.remember ;
+  var remember = req.body.remember;
 
   // console.log(loginName);
   // console.log(password);
@@ -88,12 +88,12 @@ router.post('/logout', function (req, res, next) {
     code: 200,
     message: '注销成功！'
   });
-  // 以下两种方式都是“服务器端跳转‘渲染’”
-  //方式1 直接跳转(/是指视图 名称) 跳转到views里面的login.ejs ，代码少,缺点是代码和router.get('/login')接口重复，并且浏览器显示的是logout,
-  // 方式2
-  // res.render('/login',{title:'登录'})
-  //   /指的是上面的get请求 ，解决了方式1的缺点，推荐使用
-  // res.redirect('/login');
+  /* 
+  以下两种方式都是“服务器端跳转‘渲染’”
+  方式1 直接跳转(/是指视图 名称) 跳转到views里面的login.ejs ，代码少,缺点是代码和router.get('/login')接口重复，并且浏览器显示的是logout,
+  res.render('/login',{title:'登录'})
+  方式2  指的是上面的get请求 ，解决了方式1的缺点，推荐使用
+  res.redirect('/login'); */
 });
 
 module.exports = router;
