@@ -7,6 +7,7 @@ $('#btnSave').click(function (e) {
     var sex = $.trim($('#sex').val());    
     var birthday = $.trim($('#birthday').val());
     var card = $.trim($('#card').val());
+    
     var majorId = $.trim($('#majorId').val());
     var classId = $.trim($('#classId').val());
     var departId = $.trim($('#departId').val());

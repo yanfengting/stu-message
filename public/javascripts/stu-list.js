@@ -1,3 +1,4 @@
+// 删除
 $(".remove").click(function(){
     // list.ejs写 data-id="<%=students[i].id %>"
     var id = $(this).data('id');
@@ -11,7 +12,7 @@ $(".remove").click(function(){
         // 刷新 location.reload
     })
 })
-
+// 批量删除
 $('#btnRemove').click(function(){
     var selected = $('.selectSingle:checked');
     if(selected.length <= 0){

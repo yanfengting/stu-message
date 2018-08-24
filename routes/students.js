@@ -7,6 +7,7 @@ var checklogin = require('../modules/checkLogin.js');
 var pager = require('../modules/pager.js');
 
 router.get('/add', checklogin, function (req, res, next) {
+    // 查询专业班级院系的信息，在add.ejs里面获取
     var sql = `
     SELECT * FROM majors WHERE status = 0;
     SELECT * FROM classes WHERE status = 0;
