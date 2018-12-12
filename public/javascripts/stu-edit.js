@@ -22,7 +22,8 @@ $('#btnSave').click(function (e) {
     var phone = $.trim($('#phone').val());
     var email = $.trim($('#email').val());
 
-    var id = $("input[type='hidden']").val();
+    var id = $("input[type='hidden']").val(); 
+    console.log(id)
 
     var data = {id,sno,name,sex, birthday,card,majorId,classId,departId,nativePlace ,address, qq,phone, email}
     // 客户端判断省略

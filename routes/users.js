@@ -48,6 +48,7 @@ router.post('/login', function (req, res, next) {
       res.json({ code: 205, message: "你的账号被禁用或删除！" })
       return;
     }
+    
     // 把查询到的user存到session
     delete user.password;
     req.session.user = user; //后面的user是查询出来的

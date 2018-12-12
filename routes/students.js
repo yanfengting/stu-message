@@ -191,7 +191,7 @@ router.get('/list', checklogin, function (req, res, next) {
                 console.log(pager(198,totalPage));
                 console.log(pager(199,totalPage));
         
-            res.render('students/list', { 
+        res.render('students/list', { 
             title: '学生列表！', 
             students: result[4],
             majors:result[0],
@@ -274,8 +274,8 @@ router.post('/edit', checklogin, function (req, res, next) {
         }
 
         var sql = `UPDATE students set sno=?,name=?,sex=?,birthday=?,card=?,majorId=?,classId=?,departId=?, nativePlace=?, address=?, qq=?, phone=?,updateTime=?,updateUserId=? where id=?`;
-        var date = [sno, name, sex, birthday, card, majorId, classId, departId, nativePlace, address, qq, phone, email, new Date(), req.session.user.id, id];
-        pool.query(sql, date, function (err, result1) {
+        var data = [sno, name, sex, birthday, card, majorId, classId, departId, nativePlace, address, qq, phone, email, new Date(), req.session.user.id, id];
+        pool.query(sql, data, function (err, result1) {
             if (err) {
                 res.json({ code: 202, message: '数据库操作异常！' });
                 return;
